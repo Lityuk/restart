@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 
@@ -13,9 +13,18 @@ function App() {
         {id: 5, title: "Angular", isDone: false},
     ]
 
+    let [tasks, setTasks] = useState(task1)
+
+    const removeTask = (id: number) => {
+
+        console.log(id)
+        setTasks([...tasks].filter((t) => t.id !== id))
+    }
+
+
     return (
         <div className="App">
-            <Todolist title="What to learn" tasks={task1}/>
+            <Todolist title="What to learn" tasks={tasks} removeTask={removeTask}/>
         </div>
     );
 }
