@@ -1,13 +1,14 @@
-import React from "react";
+import React, {KeyboardEvent, useState} from "react";
 
 type TodolistPropsType = {
     title: string
     tasks: Array<TasksType>
-    removeTask: (id:number) => void
+    removeTask: (id: string) => void
+    addTask: (title: string) => void
 }
 
 type TasksType = {
-    id: number
+    id: string
     title: string,
     isDone: boolean
 }
@@ -15,21 +16,41 @@ type TasksType = {
 
 export const Todolist = (props: TodolistPropsType) => {
 
-    const removeTaskHandler = (id:number) => {
+    const [title, setTitle] = useState('')
+
+    const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+
+    }
+
+    const addTaskHandler = () => {
+        props.addTask(title)
+        setTitle('')
+    }
+
+    const removeTaskHandler = (id: string) => {
         props.removeTask(id)
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+
+        if (e.key === "Enter") {
+            addTaskHandler()
+        }
     }
 
     return (
         <div>
             <h3> {props.title}</h3>
             <div>
-                <input/>
-                <button>+</button>
+                <input value={title} onChange={changeInput} onKeyPress={onKeyPressHandler}/>
+                <button onClick={addTaskHandler}>+</button>
+
             </div>
             <ul>
                 {props.tasks.map(t => (
                     <li><input key={t.id} type="checkbox" checked={t.isDone}/> <span>{t.title}</span>
-                        <button onClick={()=>removeTaskHandler(t.id)}>X</button>
+                        <button onClick={() => removeTaskHandler(t.id)}>X</button>
                     </li>))}
             </ul>
             <div>
