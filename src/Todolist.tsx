@@ -1,10 +1,12 @@
 import React, {KeyboardEvent, useState} from "react";
+import {FilterValueType} from "./App";
 
 type TodolistPropsType = {
     title: string
     tasks: Array<TasksType>
     removeTask: (id: string) => void
     addTask: (title: string) => void
+    changeFilter:(filterValue:FilterValueType)=>void
 }
 
 type TasksType = {
@@ -39,6 +41,10 @@ export const Todolist = (props: TodolistPropsType) => {
         }
     }
 
+    const changeFilterHandler = (filterValue:FilterValueType) =>{
+        props.changeFilter(filterValue)
+    }
+
     return (
         <div>
             <h3> {props.title}</h3>
@@ -49,14 +55,14 @@ export const Todolist = (props: TodolistPropsType) => {
             </div>
             <ul>
                 {props.tasks.map(t => (
-                    <li><input key={t.id} type="checkbox" checked={t.isDone}/> <span>{t.title}</span>
-                        <button onClick={() => removeTaskHandler(t.id)}>X</button>
+                    <li><input key={t.id} type="checkbox" checked={t.isDone}/> <span>{t.title}</span> <span>  </span>
+                        <button onClick={() => removeTaskHandler(t.id)}> x</button>
                     </li>))}
             </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <button onClick={()=>changeFilterHandler("all")} >All</button>
+                <button onClick={()=>changeFilterHandler("active")}>Active</button>
+                <button onClick={()=>changeFilterHandler("completed")}>Completed</button>
             </div>
         </div>
     )
