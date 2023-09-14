@@ -7,7 +7,7 @@ export type TasksType = {
     title: string
     isDone: boolean
 }
-type filterType = "All" | "Active" | "Completed";
+export type filterType = "All" | "Active" | "Completed";
 
 function App() {
 
@@ -19,17 +19,32 @@ function App() {
         {id: 5, title: "graphQL", isDone: true}
     ]);
 
-    const [filter, setFilter] = useState("All")
-
     const removeTask = (taskID: number) => {
         setTasks(tasks.filter((t) => (t.id !== taskID)))
     }
 
+    const [filter, setFilter] = useState<filterType>("All")
+
+    const addFilter = (filterValue: filterType) => {
+        setFilter(filterValue)
+    }
+
+    let tasksAfterFilter = tasks;
+
+    if (filter === "Active") {
+        tasksAfterFilter = tasksAfterFilter.filter((t) => (!t.isDone))
+    }
+    if (filter === "Completed") {
+        tasksAfterFilter = tasksAfterFilter.filter((t) => (t.isDone))
+    }
+
+
     return (
         <div className="App">
             <Todolist title="What to learn"
-                      tasks={tasks}
+                      tasks={tasksAfterFilter}
                       removeTask={removeTask}
+                      addFilter={addFilter}
             />
         </div>
     );
