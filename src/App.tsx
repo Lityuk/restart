@@ -46,7 +46,6 @@ function App() {
 
     let tasksAfterFilter = tasks;
 
-
     if (filter === "Active") {
         tasksAfterFilter = tasksAfterFilter.filter((t) => (!t.isDone))
     }
@@ -63,6 +62,7 @@ function App() {
                       addFilter={addFilter}
                       addTask={addTask}
                       changeStatus={changeStatus}
+                      filter={filter}
             />
         </div>
     );
