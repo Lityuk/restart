@@ -3,10 +3,11 @@ import {filterType, TasksType} from "./App";
 
 
 type TodolistPropsType = {
+    todolistId:string
     title?: string
     tasks: Array<TasksType>
     removeTask: (id: string) => void
-    addFilter: (filterValue: filterType) => void
+    addFilter: (filterValue: filterType,todolistId:string) => void
     addTask: (taskName: string) => void
     changeStatus: (id: string, isDone: boolean) => void
     filter: filterType
@@ -37,9 +38,9 @@ export const Todolist = (props: TodolistPropsType) => {
         }
     }
 
-    const onAllClickHandler = () => props.addFilter("All")
-    const onActiveClickHandler = () => props.addFilter("Active")
-    const onCompletedClickHandler = () => props.addFilter("Completed")
+    const onAllClickHandler = () => props.addFilter("All",props.todolistId)
+    const onActiveClickHandler = () => props.addFilter("Active",props.todolistId)
+    const onCompletedClickHandler = () => props.addFilter("Completed",props.todolistId)
 
 
     return (
