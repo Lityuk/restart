@@ -20,70 +20,72 @@ export type filterType = "All" | "Active" | "Completed";
 function App() {
 
 
-
-    // const [filter, setFilter] = useState<filterType>("All")
+    let todolistId1 = v1();
+    let todolistId2 = v1();
 
     let [todolists, setTodolists] = useState<Array<TodolistType>>([
-        {id: "todolistId1", title: "What to learn", filter: "All"},
-        {id: "todolistId2", title: "What to buy", filter: "All"}
+        {id: todolistId1, title: "What to learn", filter: "All"},
+        {id: todolistId2, title: "What to buy", filter: "All"}
     ])
 
-    const [tasks, setTasks] = useState([
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "RestAPI", isDone: false},
-        {id: v1(), title: "graphQL", isDone: true}
-    ]);
+    let [tasks, setTasks] = useState({
+        [todolistId1]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: false},
+            {id: v1(), title: "CSS", isDone: true}
+        ],
+        [todolistId2]: [
+            {id: v1(), title: "Milk", isDone: true},
+            {id: v1(), title: "React Book", isDone: false},
+            {id: v1(), title: "Corvus", isDone: false}
+        ]
+    });
 
-    const removeTask = (taskID: string) => {
-        setTasks(tasks.filter((t) => (t.id !== taskID)))
+
+    const removeTask = (taskID: string, todolistId: string) => {
+        // Таски для удаления лежат в объекте, с ключом, который приходит в todolistId
+        let todolistTasks = tasks[todolistId];
+        //Перезапишем в этом объекте наши таски, отфильтров их по пришедшему ID
+        tasks[todolistId] = todolistTasks.filter((t) => t.id !== taskID)
+        setTasks({...tasks})
     }
 
-    const addTask = (taskName: string) => {
+    const addTask = (taskName: string, todolistId: string) => {
         const newTask: TasksType = {id: v1(), title: taskName, isDone: false}
-        setTasks([newTask, ...tasks])
+        tasks[todolistId] = [newTask, ...tasks[todolistId]]
+        setTasks({...tasks})
     }
 
-    const changeStatus = (taskID: string, isDone: boolean) => {
-        let task = tasks.find(t => t.id === taskID)
+    const changeStatus = (taskID: string, isDone: boolean, todolistId: string) => {
+        let task = tasks[todolistId].find(t => t.id === taskID)
         if (task) {
             task.isDone = isDone
-            setTasks([...tasks])
+            setTasks({...tasks})
         }
-
     }
 
-    const addFilter = (filterValue: filterType,todolistId:string) => {
-        let todolist = todolists.find(tl=>tl.id === todolistId)
+    const addFilter = (filterValue: filterType, todolistId: string) => {
+        let todolist = todolists.find(tl => tl.id === todolistId)
         if (todolist) {
             todolist.filter = filterValue
             setTodolists([...todolists])
         }
     }
 
-    // let tasksAfterFilter = tasks;
-    //
-    // if (filter === "Active") {
-    //     tasksAfterFilter = tasksAfterFilter.filter((t) => (!t.isDone))
-    // }
-    // if (filter === "Completed") {
-    //     tasksAfterFilter = tasksAfterFilter.filter((t) => (t.isDone))
-    // }
-
-
     return (
         <div className="App">
             {
                 todolists.map(t => {
 
-                    let tasksAfterFilter = tasks;
+                    let allTodolistTasks = tasks[t.id]
+
+                    let tasksAfterFilter = allTodolistTasks;
 
                     if (t.filter === "Active") {
-                        tasksAfterFilter = tasksAfterFilter.filter((t) => (!t.isDone))
+                        tasksAfterFilter = allTodolistTasks.filter((t) => (!t.isDone))
                     }
                     if (t.filter === "Completed") {
-                        tasksAfterFilter = tasksAfterFilter.filter((t) => (t.isDone))
+                        tasksAfterFilter = allTodolistTasks.filter((t) => (t.isDone))
                     }
 
                     return <Todolist
