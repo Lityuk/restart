@@ -72,6 +72,10 @@ function App() {
         }
     }
 
+    const removeTodolist = (todolistId: string) => {
+        setTodolists(todolists.filter(t => t.id !== todolistId))
+    }
+
     return (
         <div className="App">
             {
@@ -90,6 +94,7 @@ function App() {
 
                     return <Todolist
                         key={t.id}
+                        removeTodolist={removeTodolist}
                         todolistId={t.id}
                         title={t.title}
                         tasks={tasksAfterFilter}
