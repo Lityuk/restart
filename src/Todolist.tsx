@@ -16,9 +16,48 @@ type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
 
-    const [title, setTitle] = useState("")
+    type AddItemPropsType = {
+        addItem: (title: string) => void
+    }
 
-    const [error, setError] = useState<string | null>("")
+    function AddItemForm(props: AddItemPropsType) {
+        const [title, setTitle] = useState("")
+        const [error, setError] = useState<string | null>(null)
+
+        const addItem = () => {
+            if (title.trim() !== "") {
+                props.addItem(title)
+                setTitle("")
+            } else setError("Task title is required")
+        }
+
+        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            setTitle(e.currentTarget.value)
+        }
+
+        const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+            setError(null)
+            if (e.key === "Enter") {
+                addTaskHandler()
+            }
+        }
+        return <div>
+            <input value={title}
+                   onChange={(e) => (onChangeHandler(e))}
+                   onKeyPress={onKeyPressHandler}
+                   className={error ? "error" : ""}/>
+            {error && <div className="error-message">{error}</div>}
+            <button onClick={addTaskHandler}>+</button>
+        </div>
+    }
+
+    const [title, setTitle] = useState("")
+    const [error, setError] = useState<string | null>(null)
+
+    const addTask = (title:string)=> {
+        props.addTask(title,props.todolistId)
+    }
+
 
     const removeTodolistHandler = () => {
         props.removeTodolist(props.todolistId)
@@ -53,10 +92,12 @@ export const Todolist = (props: TodolistPropsType) => {
                 <span> </span>
                 <button onClick={removeTodolistHandler}>X</button>
             </h3>
+            <AddItemForm addItem={addTask}/>
             <div>
                 <input value={title}
                        onChange={(e) => (onChangeHandler(e))}
-                       onKeyPress={onKeyPressHandler}/>
+                       onKeyPress={onKeyPressHandler}
+                       className={error ? "error" : ""}/>
                 {error && <div className="error-message">{error}</div>}
                 <button onClick={addTaskHandler}>+</button>
             </div>
