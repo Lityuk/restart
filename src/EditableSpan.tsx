@@ -1,23 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
 
 type EditableSpanPropsType = {
-    value:string
-    onChange:(newValue:string)=>void
+    value: string
+    // onChange: (newValue: string) => void
 }
 
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
-    return (
-        <div>
 
-        </div>
-        // <li key={t.id} className={t.isDone ? "is-done" : ""}>
-        //     <input type="checkbox"
-        //            onChange={props.onChangeStatusHandler}
-        //            checked={t.isDone}/>
-        //     <span>{props.value}</span>
-        //     <span> </span>
-        //     <button onClick={props.onClickHandler}>X</button>
-        // </li>
+    let [editMode, setEditMode] = useState(false)
+
+    function onDoubleClickHandler() {
+        setEditMode(true)
+    }
+
+    return (
+        <span>
+          { editMode ? <input value={props.value}/> :
+              <span onDoubleClick={onDoubleClickHandler}>{props.value}</span> }
+            <span> </span>
+        </span>
+
     )
+
+
 }

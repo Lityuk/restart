@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import {filterType, TasksType} from "./App";
 import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 type TodolistPropsType = {
     todolistId: string
@@ -25,7 +26,7 @@ export const Todolist = (props: TodolistPropsType) => {
     const onActiveClickHandler = () => props.addFilter("Active", props.todolistId)
     const onCompletedClickHandler = () => props.addFilter("Completed", props.todolistId)
 
-    const addTask = (title:string) => {
+    const addTask = (title: string) => {
         props.addTask(title, props.todolistId)
     }
 
@@ -53,8 +54,8 @@ export const Todolist = (props: TodolistPropsType) => {
                         <input type="checkbox"
                                onChange={onChangeStatusHandler}
                                checked={t.isDone}/>
-                        <span>{t.title}</span>
-                        <span> </span>
+                        <EditableSpan value={t.title}/>
+
                         <button onClick={onClickHandler}>X</button>
                     </li>
                 })}
