@@ -12,13 +12,11 @@ export function AddItemForm(props: AddItemPropsType) {
         if (title.trim() !== "") {
             props.addItem(title)
             setTitle("")
-        } else setError("Task title is required")
+        } else setError("Title is required")
     }
-
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
-
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.key === "Enter") {

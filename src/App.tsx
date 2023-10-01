@@ -92,7 +92,9 @@ function App() {
 
     return (
         <div className="App">
+
             <AddItemForm addItem={addTodolist}/>
+
             {
                 todolists.map(t => {
 
@@ -120,9 +122,7 @@ function App() {
                         filter={t.filter}
                     />
                 })
-            }
-
-        </div>
+            }</div>
     );
 }
 
