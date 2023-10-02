@@ -54,7 +54,7 @@ export const Todolist = (props: TodolistPropsType) => {
                         <input type="checkbox"
                                onChange={onChangeStatusHandler}
                                checked={t.isDone}/>
-                        <EditableSpan value={t.title}/>
+                        <EditableSpan value={t.title} onChange={addTask}/>
 
                         <button onClick={onClickHandler}>X</button>
                     </li>
