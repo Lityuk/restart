@@ -98,6 +98,16 @@ function App() {
         })
     }
 
+    const changeTodolistTitle = (newTitle: string, todolistId: string) => {
+        //найдем нужный тудулист
+        const todolist = todolists.find(tl => tl.id === todolistId);
+        if (todolist) {
+            // если нашёлся - изменим ему заголовок
+            todolist.title = newTitle;
+            setTodolists([...todolists]);
+        }
+    }
+
     return (
         <div className="App">
 
@@ -129,6 +139,7 @@ function App() {
                         changeTitle={changeTitle}
                         changeStatus={changeStatus}
                         filter={t.filter}
+                        changeTodolistTitle={changeTodolistTitle}
                     />
                 })
             }</div>
